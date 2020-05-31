@@ -1,4 +1,4 @@
-const candidate = Array(45).fill().map((v, i) => i + 1)
+const candidate = Array(45).fill().map((v, i) => i + 1);
 const shuffle = [];
 while (candidate.length > 0) {
   const random = Math.floor(Math.random() * candidate.length);
@@ -46,14 +46,14 @@ winBalls.forEach((number, index) => {
     colorize(number, ball);
     ball.textContent = number;
     resultTag.appendChild(ball);
-  }, 1000 * (index + 1))
-})
+  }, 1000 * (index + 1));
+});
 
 const bonusTag = document.querySelector('#bonus');
 setTimeout(() => {
   const bonusBall = document.createElement('div');
   bonusBall.className = 'ball';
-  colorize(bonus, bonusBall)
+  colorize(bonus, bonusBall);
   bonusBall.textContent = bonus;
   bonusTag.appendChild(bonusBall);
 }, 7000);

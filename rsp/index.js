@@ -1,59 +1,61 @@
-const candidate = Array(45).fill().map((v, i) => i + 1)
-const shuffle = [];
-while (candidate.length > 0) {
-  const random = Math.floor(Math.random() * candidate.length);
-  const spliceArray = candidate.splice(random, 1);
-  const value = spliceArray[0];
-  shuffle.push(value);
+const computerTag = document.querySelector('#computer');
+computerTag.style.background = `url(https://en.pimg.jp/023/182/267/1/23182267.jpg) 0 0`;
+
+let computerChoice = 'rock';
+const rspCoord = {
+  rock: '0', // 바위
+  scissors: '-142px', // 가위
+  paper: '-284px', // 보
+};
+
+const intervalMaker = () => {
+  return setInterval(() => {
+    if (computerChoice === 'rock') {
+      computerChoice = 'scissors';
+    } else if (computerChoice === 'scissors') {
+      computerChoice = 'paper';
+    } else if (computerChoice === 'paper') {
+      computerChoice = 'rock';
+    }
+    computerTag.style.background = `url(https://en.pimg.jp/023/182/267/1/23182267.jpg) ${rspCoord[computerChoice]} 0`;
+  }, 50)
 }
-console.log(shuffle);
-const winBalls = shuffle.slice(0, 6).sort((p, c) => p - c);
-const bonus = shuffle[6];
-console.log(winBalls);
-console.log(bonus);
+let intervalId = intervalMaker();
 
-function colorize(number, tag) {
-  if (number <= 10) {
-    tag.style.backgroundColor = 'red';
-    tag.style.color = 'white';
-  } else if (number <= 20) {
-    tag.style.backgroundColor = 'orange';
-  } else if (number <= 30) {
-    tag.style.backgroundColor = 'yellow';
-  } else if (number <= 40) {
-    tag.style.backgroundColor = 'blue';
-    tag.style.color = 'white';
-  } else {
-    tag.style.backgroundColor = 'green';
-    tag.style.color = 'white';
-  }
-}
+const rockTag = document.querySelector('#rock');
+const scissorsTag = document.querySelector('#scissors');
+const paperTag = document.querySelector('#paper');
 
-const resultTag = document.querySelector('#result');
-// for (let i = 0; i < 6; i++) { // 클로저 문제는 let 나오면서 X
-//   setTimeout(() => {
-//     const ball = document.createElement('div');
-//     ball.className = 'ball';
-//     colorize(winBalls[i], ball);
-//     ball.textContent = winBalls[i];
-//     resultTag.appendChild(ball);
-//   }, 1000 * (i + 1))
-// }
-winBalls.forEach((number, index) => {
-  setTimeout(() => {
-    const ball = document.createElement('div');
-    ball.className = 'ball';
-    colorize(number, ball);
-    ball.textContent = number;
-    resultTag.appendChild(ball);
-  }, 1000 * (index + 1))
-})
+// 가위: 1, 바위: 0, 보: -1
+// 나\컴퓨터  가위   바위    보
+//   가위     0      1      2
+//   바위     -1     0      1
+//   보      -2     -1     0
+const score = {
+  rock: 0,
+  scissors: 1,
+  paper: -1,
+};
 
-const bonusTag = document.querySelector('#bonus');
-setTimeout(() => {
-  const bonusBall = document.createElement('div');
-  bonusBall.className = 'ball';
-  colorize(bonus, bonusBall)
-  bonusBall.textContent = bonus;
-  bonusTag.appendChild(bonusBall);
-}, 7000);
+const clickButton = (myChoice) => {
+  return () => {
+    clearInterval(intervalId);
+    const myScore = score[myChoice];
+    const computerScore = score[computerChoice];
+    const diff = myScore - computerScore;
+    const scoreTag = document.querySelector('#score')
+    let accScore = Number(scoreTag.textContent);
+    if (diff === 2 || diff === -1) {
+      accScore += 1;
+    } else if (diff === -2 || diff === 1) {
+      accScore -= 1;
+    }
+    scoreTag.textContent = accScore;
+    setTimeout(() => {
+      intervalId = intervalMaker();
+    }, 1000);
+  };
+};
+rockTag.addEventListener('click', clickButton('rock'));
+scissorsTag.addEventListener('click', clickButton('scissors'));
+paperTag.addEventListener('click', clickButton('paper'));

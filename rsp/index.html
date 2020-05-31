@@ -3,24 +3,21 @@
     <meta charset="utf-8" />
     <title>가위바위보</title>
     <style>
-      .ball {
-        display: inline-block;
-        border: 1px solid black;
-        border-radius: 20px;
-        width: 40px;
-        height: 40px;
-        line-height: 40px;
-        font-size: 20px;
-        text-align: center;
-        margin-right: 20px;
+      #computer {
+        width: 142px;
+        height: 200px;
+        background-position: 0 0;
       }
     </style>
   </head>
   <body>
-    <div>당첨 숫자</div>
-    <div id="result"></div>
-    <div>보너스!</div>
-    <div id="bonus"></div>
+    <div id="computer"></div>
+    <div>
+      <button id="rock" class="btn">바위</button>
+      <button id="scissors" class="btn">가위</button>
+      <button id="paper" class="btn">보</button>
+    </div>
+    <div id="score">0</div>
     <script src="./index.js"></script>
   </body>
 </html>
